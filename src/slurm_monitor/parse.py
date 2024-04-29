@@ -255,7 +255,7 @@ def format_user_infos(data: list):
 
 
 def concat_strs(*strs):
-    strs = [v.split('\n') for v in strs]
+    strs = [v.split('\n') for v in strs if v is not None]
     outs = []
     for row in zip_longest(*strs):
         out_row = ''
