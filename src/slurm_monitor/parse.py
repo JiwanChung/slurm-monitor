@@ -173,7 +173,7 @@ def print_node(row, draw: bool = True, filter_irrelevant: bool = True) -> Option
         gpu_str = click.style(f'{gpu_available}', fg='green')
     else:
         gpu_str = f'{gpu_available}'
-    gpu_str += f'/{gpu_total}) '
+    gpu_str += f'/{gpu_total}'
     outs.append(gpu_str)
 
     gpu_str = ''
@@ -191,23 +191,19 @@ def print_node(row, draw: bool = True, filter_irrelevant: bool = True) -> Option
 
     gpu_str = ''
     if status == 'running':
-        gpu_str += ' ['
         gpu_str += click.style(b'\xf0\x9f\x8f\x83'.decode("utf-8"), fg='blue')
         if 'job_id' in row:
-            gpu_str += ' running: '
+            gpu_str += 'running: '
             gpu_str += click.style(f"{row['job_id']}", fg='magenta')
-            gpu_str += ']'
         else:
-            gpu_str += ' running]'
+            gpu_str += 'running'
     elif status == 'scheduled':
-        gpu_str += ' ['
         gpu_str += click.style(b'\xe2\xa7\x97'.decode("utf-8"), fg='yellow')
         if 'job_id' in row:
-            gpu_str += ' scheduled: '
+            gpu_str += 'scheduled: '
             gpu_str += click.style(f"{row['job_id']}", fg='magenta')
-            gpu_str += ']'
         else:
-            gpu_str += ' scheduled]'
+            gpu_str += 'scheduled'
     outs.append(gpu_str)
 
     return outs
