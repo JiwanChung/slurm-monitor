@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "slurm-monitor"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Jiwan Chung", email = "jiwan.chung.research@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "typer>=0.12.3",
+  "humanize>=4.9.0",
+  "humanfriendly>=10.0",
+]
+
+[project.urls]
+Documentation = "https://github.com/unknown/slurm-monitor#readme"
+Issues = "https://github.com/unknown/slurm-monitor/issues"
+Source = "https://github.com/unknown/slurm-monitor"
+
+[tool.hatch.version]
+path = "src/slurm_monitor/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["5.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/slurm_monitor tests}"
+
+[tool.coverage.run]
+source_pkgs = ["slurm_monitor", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/slurm_monitor/__about__.py",
+]
+
+[tool.coverage.paths]
+slurm_monitor = ["src/slurm_monitor", "*/slurm-monitor/src/slurm_monitor"]
+tests = ["tests", "*/slurm-monitor/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[project.scripts]
+slm = "slurm_monitor.cli:app"
