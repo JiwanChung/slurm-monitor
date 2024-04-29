@@ -241,8 +241,7 @@ def wrap_box(text, title: Optional[str] = None):
         out += '-' * (max_len + 4)
 
     out += '\n'
-    length = min(lengths)  # same length for table
-    for line in text:
+    for line, length in zip(text, lengths):
         line += ' ' * (max_len - length)
         out += f'| {line} |\n'
     out += '-' * (max_len + 4)
