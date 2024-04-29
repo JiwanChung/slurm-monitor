@@ -21,7 +21,7 @@ COLUMNS = {
 
 USER_COLUMNS = {
     'scheduled_nodes': 'SchedNodeList',
-    'allocated_nodes': 'NodeList',
+    'allocated_nodes': '\\sNodeList',
     'user_resources': 'TRES',
     'command': 'Command',
     'log_path': 'StdOut',
