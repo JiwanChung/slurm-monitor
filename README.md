@@ -17,7 +17,7 @@ Slurm resource monitoring tools
 I recommend using `pipx` for installation, since this package is a CLI tool.
 
 ```console
-pipx install https://github.com/JiwanChung/slurm-monitor.git
+pipx install git+https://github.com/JiwanChung/slurm-monitor
 ```
 
 ## Usage
