@@ -132,10 +132,10 @@ def build_total(rows):
 
 def sort_with_firsts(dt, firsts: list):
     total = set(dt.keys())
-    firsts = total - set(firsts)
-    rests = list(total - firsts)
-    firsts = list(sorted(firsts))
-    rests = list(sorted(rests))
+    rests = total - set(firsts)
+    firsts = total - set(rests)
+    firsts = list(sorted(list(firsts)))
+    rests = list(sorted(list(rests)))
 
     return {k: dt[k] for k in [*firsts, *rests]}
 
