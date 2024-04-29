@@ -166,15 +166,18 @@ def print_node(row, draw: bool = True, filter_irrelevant: bool = True) -> Option
         gpu_str = click.style(gpu_str, bg=bg, fg='white')
         return gpu_str
 
-    gpu_str = f'{row['node']:5s} ('
+    outs = []
+    gpu_str = f'{row['node']:5s}'
+    outs.append(gpu_str)
     if gpu_available > 0:
-        gpu_str += click.style(f'{gpu_available}', fg='green')
+        gpu_str = click.style(f'{gpu_available}', fg='green')
     else:
-        gpu_str += f'{gpu_available}'
+        gpu_str = f'{gpu_available}'
     gpu_str += f'/{gpu_total}) '
+    outs.append(gpu_str)
 
+    gpu_str = ''
     if draw:
-        gpu_str += '['
         start = 0
         end = start + gpu_user
         gpu_str += str_colored(start, end, bg='blue')
@@ -184,9 +187,9 @@ def print_node(row, draw: bool = True, filter_irrelevant: bool = True) -> Option
         start = end
         end = start + gpu_others
         gpu_str += str_colored(start, end, bg='reset')
-        gpu_str += ']'
+    outs.append(gpu_str)
 
-    gpu_str = gpu_str.strip()
+    gpu_str = ''
     if status == 'running':
         gpu_str += ' ['
         gpu_str += click.style(b'\xf0\x9f\x8f\x83'.decode("utf-8"), fg='blue')
@@ -205,18 +208,25 @@ def print_node(row, draw: bool = True, filter_irrelevant: bool = True) -> Option
             gpu_str += ']'
         else:
             gpu_str += ' scheduled]'
+    outs.append(gpu_str)
 
-    return gpu_str
+    return outs
 
 
 def print_partition(name: str, nodes: list, filter_irrelevant: bool = True) -> Optional[str]:
     partition_str = click.style(name, bg='reset', fg='green')
+    outs = []
     for node in nodes:
-        node_str = print_node(node, node['node'] != 'total', filter_irrelevant=filter_irrelevant)
-        if node_str is not None:
-            partition_str += f'\n{node_str}'
-    if filter_irrelevant and len(partition_str.split('\n')) <= 1:
+        node_li = print_node(node, node['node'] != 'total', filter_irrelevant=filter_irrelevant)
+        if node_li is not None:
+            outs.append(node_li)
+    if filter_irrelevant and len(outs) < 1:
         partition_str = None
+    else:
+        headers = ['node', '#', 'GPUs', 'status']
+        nodes_str = tabulate(outs, tablefmt='rounded_grid', headers=headers)
+        partition_str = f'{partition_str}\n{nodes_str}'
+
     return partition_str
 
 
