@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import typer
+import click
 
-from slurm_monitor.gpustat import all_info
-from slurm_monitor.format import format_data
+from slurm_monitor.parse import parse_data
+from slurm_monitor.cmd import get_data, get_user
 
 app = typer.Typer()
 
@@ -16,8 +17,10 @@ def cli(name: str):
 
 @app.command()
 def show(name: str):
-    print(f'show {name}')
+    data = get_data()
+    user_data = get_user()
+    msg = parse_data(data, user_data)
+    click.echo(msg)
 
 
 app()
-# typer.run(cli)
