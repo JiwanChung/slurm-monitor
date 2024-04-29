@@ -246,7 +246,7 @@ def format_user_infos(data: list):
             'id': row['id'],
             'status': row['status'],
             'cmd': Path(row['command']).name,
-            'out': Path(row['log_path']).name,
+            'out': Path(row['log_path']).name if row['log_path'] else 'null',
             'nodes': row['nodes'],
             'gpu': row['user_resources'].get('gpu', 0)
         }
