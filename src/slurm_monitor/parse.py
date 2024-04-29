@@ -12,6 +12,11 @@ from tabulate import tabulate
 
 from slurm_monitor.utils import get_print_output
 
+'''
+TODO: replace crude boxing with tabulate(table, tablefmt='rounded_grid') / which works with click.style btw
+'''
+
+
 COLUMNS = {
     'partition': 'Partitions',
     'node': 'NodeName',
