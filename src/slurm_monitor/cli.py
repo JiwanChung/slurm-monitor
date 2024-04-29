@@ -16,7 +16,7 @@ def cli(name: str):
 
 
 @app.command()
-def show(name: str):
+def show():
     data = get_data()
     user_data = get_user()
     msg = parse_data(data, user_data)

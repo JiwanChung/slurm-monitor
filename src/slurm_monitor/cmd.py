@@ -7,7 +7,7 @@ from typing import Optional
 from slurm_monitor.parse import parse_user
 
 CMDS = {
-    'nodes': 'scontrol show nodes'
+    'nodes': 'scontrol show nodes',
     'user': 'squeue',
     'job': 'scontrol show job {}'
 }
@@ -40,6 +40,8 @@ def get_data():
 
 def get_user():
     user = run_cmd(CMDS['user'])
+    if user is None:
+        return []
     jobs = parse_user(user)
     outs = []
     for job in jobs:

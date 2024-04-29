@@ -268,6 +268,9 @@ def concat_strs(*strs):
 
 
 def parse_data(data: str, user_data: List[str] = []):
+    if not data:
+        return "Error retrieving statistics..."
+
     data = [v.strip() for v in data.split('\n\n') if v]
 
     infos = {}

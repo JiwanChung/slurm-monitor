@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "slurm-monitor"
 dynamic = ["version"]
-description = ''
+description = 'slurm resource monitoring util'
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
@@ -32,9 +32,9 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/unknown/slurm-monitor#readme"
-Issues = "https://github.com/unknown/slurm-monitor/issues"
-Source = "https://github.com/unknown/slurm-monitor"
+Documentation = "https://github.com/JiwanChung/slurm-monitor#readme"
+Issues = "https://github.com/JiwanChung/slurm-monitor/issues"
+Source = "https://github.com/JiwanChung/slurm-monitor"
 
 [tool.hatch.version]
 path = "src/slurm_monitor/__about__.py"
