@@ -167,7 +167,7 @@ def print_node(row, draw: bool = True, filter_irrelevant: bool = True) -> Option
         return gpu_str
 
     outs = []
-    gpu_str = f'{row['node']:5s}'
+    gpu_str = f"{row['node']:5s}"
     outs.append(gpu_str)
     if gpu_available > 0:
         gpu_str = click.style(f'{gpu_available}', fg='green')
