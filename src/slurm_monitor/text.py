@@ -34,4 +34,4 @@ def text():
     run_textual(data, user_infos)
 
 
-app()
+text()

@@ -29,6 +29,8 @@ dependencies = [
   "click>=8.1.7",
   "numpy>=1.26.4",
   "tabulate[widechars]>=0.9.0",
+  "textual>=0.58",
+  "rich>=13.7"
 ]
 
 [project.urls]
@@ -42,6 +44,7 @@ path = "src/slurm_monitor/__about__.py"
 [tool.hatch.envs.default]
 dependencies = [
   "coverage[toml]>=6.5",
+  "textual-dev>=1.5",
   "pytest",
 ]
 [tool.hatch.envs.default.scripts]

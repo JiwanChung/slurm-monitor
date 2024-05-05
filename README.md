@@ -30,6 +30,12 @@ slm show
 
 mt also comes with basic summarization of your submitted jobs!
 
+- An alternative UI based on [Textual]() (and perhaps is better).
+
+```bash
+slm text
+```
+
 ## License
 
 `slurm-monitor` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.

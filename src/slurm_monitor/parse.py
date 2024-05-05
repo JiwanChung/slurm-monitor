@@ -4,18 +4,16 @@
 import re
 from itertools import zip_longest
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Dict, Optional
 
 import click
 import numpy as np
 from tabulate import tabulate
 
 from slurm_monitor.utils import get_print_output
-
 '''
 TODO: replace crude boxing with tabulate(table, tablefmt='rounded_grid') / which works with click.style btw
 '''
-
 
 COLUMNS = {
     'partition': 'Partitions',
@@ -116,8 +114,9 @@ def format_row(row):
 
     if 'user' in row:
         for key in ['cpu', 'gpu']:
-            outs[key][0] = 2 if row['user']['running'] else 1
-            outs[key][1] = row['user'][key]
+            if outs[key] is not None:
+                outs[key][0] = 2 if row['user']['running'] else 1
+                outs[key][1] = row['user'][key]
         outs['job_id'] = row['user']['job_id']
     return outs
 
@@ -145,7 +144,9 @@ def sort_with_firsts(dt, firsts: list):
     return {k: dt[k] for k in [*firsts, *rests]}
 
 
-def print_node(row, draw: bool = True, filter_irrelevant: bool = True) -> Optional[str]:
+def print_node(row,
+               draw: bool = True,
+               filter_irrelevant: bool = True) -> Optional[str]:
     # set gpu
     if row['gpu'] is None:
         return None
@@ -209,11 +210,15 @@ def print_node(row, draw: bool = True, filter_irrelevant: bool = True) -> Option
     return outs
 
 
-def print_partition(name: str, nodes: list, filter_irrelevant: bool = True) -> Optional[str]:
+def print_partition(name: str,
+                    nodes: list,
+                    filter_irrelevant: bool = True) -> Optional[str]:
     partition_str = click.style(name, bg='reset', fg='green')
     outs = []
     for node in nodes:
-        node_li = print_node(node, node['node'] != 'total', filter_irrelevant=filter_irrelevant)
+        node_li = print_node(node,
+                             node['node'] != 'total',
+                             filter_irrelevant=filter_irrelevant)
         if node_li is not None:
             outs.append(node_li)
     if filter_irrelevant and len(outs) < 1:
@@ -232,7 +237,7 @@ def wrap_box(text, title: Optional[str] = None):
     max_len = max(lengths)
     out = ''
     out += '-' * (max_len + 4)
-    
+
     if title is not None:
         out += '\n'
         length = len(get_print_output(title))
@@ -248,7 +253,7 @@ def wrap_box(text, title: Optional[str] = None):
     return out
 
 
-def format_user_infos(data: list):
+def _format_user_infos(data: list):
     if len(data) < 1:
         return None
     outs = []
@@ -262,6 +267,11 @@ def format_user_infos(data: list):
             'gpu': row['user_resources'].get('gpu', 0)
         }
         outs.append(out)
+    return outs
+
+
+def format_user_infos(data: list):
+    outs = _format_user_infos(data)
     return tabulate(outs, headers='keys', tablefmt='simple_outline')
 
 
@@ -338,7 +348,10 @@ def parse_data(data: str, user_data: List[str] = []):
     }
     data = sort_with_firsts(data, show_first_partitions)
     data = {k: [build_total(v), *v] for k, v in data.items()}
+    return data, user_infos
 
+
+def print_data(data: Dict[str, list], user_infos: list):
     strs = ''
     for k, v in data.items():
         _str = print_partition(k, v)
